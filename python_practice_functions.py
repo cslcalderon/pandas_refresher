@@ -25,7 +25,7 @@ def clean_rows_efficient(data):
             score = int(row["score"].strip())
             if score and row["name"] and row["city"]:
                 cleaned_data.append(
-                    {"name": row["name"], "score": row["score"], "city": row["city"]}
+                    {"name": row["name"], "score": score, "city": row["city"]}
                 )
 
     return cleaned_data
@@ -50,3 +50,13 @@ def clean_sales_data(data):
             date = row["date"].strip()
             cleaned_rows.append({"customer": customer, "amount": amount, "date": date})
     return cleaned_rows
+
+
+def filter_transactions(data, threshold):
+    valid_ids = []
+    for row in data:
+        if row["amount"].strip():
+            amount = int(row["amount"].strip())
+            if amount >= threshold and row["status"] == "complete":
+                valid_ids.append(row["id"].strip())
+    return valid_ids
